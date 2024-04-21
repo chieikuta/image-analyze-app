@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 
 
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000;
+    windowMs: 15 * 60 * 1000,
     max: 100
 })
 
@@ -29,18 +29,18 @@ app.use(express.static('public'));
 // クイズデータ取得
 app.get('/get-quiz', async (req, res) => {
     try {
-        const response = await axios.get('https://opentdb.com/api.php?amount=10&encode=url3986&language=ja');
+        const response = await axios.get('https://opentdb.com/api.php?amount=10&encode=url3986');
         const decodedData = response.data.results.map(quiz => {
             return {
                 ...quiz,
                 question: decodeURIComponent(quiz.question),
-                correct_answer: decodeURIComponent(quiz.collect_answer),
-                incorrent_answer: quiz.incorrent_answers.map(answer => {
-                    decodeURIComponent(quiz.incorrent_answers)
-                }) 
+                correct_answer: decodeURIComponent(quiz.correct_answer),
+                incorrect_answers: quiz.incorrect_answers.map(answer => 
+                    decodeURIComponent(answer)
+                ) 
             }
         })
-        res.json({ result: decodedData});
+        res.json({ results: decodedData });
     } catch (error) {
         console.error('クイズデータを取得中にエラーが発生しました', error);
         res.status(500).send('クイズデータを取得中にエラーが発生しました')
