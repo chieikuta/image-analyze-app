@@ -56,19 +56,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 次の問題表示、最後の場合はクイズ終了関数
-    const showNextQuestion = () => {
-        if  (currentQuestion < quizData.length -1) {
+    function showNextQuestion() {
+        if (currentQuestion < quizData.length - 1) {
             currentQuestion++;
             displayQuestion();
         } else {
-            scoreContainer.textContent = `your score ${score}/${quizData.length}`
+            alert(`your score ${score}/${quizData.length}    一問目に戻ります`);
             currentQuestion = 0;
             loadQuiz();
         }
-    };
-
+    }
     loadQuiz();
-    scoreContainer.textContent = "";
+
 
 
 });
